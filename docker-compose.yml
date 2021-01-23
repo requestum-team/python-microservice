@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+    app:
+        build:
+          context: .
+        env_file:
+          - .env
+        ports:
+          - ${SERVER_PORT}:${SERVER_PORT}

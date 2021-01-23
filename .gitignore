@@ -1,0 +1,11 @@
+*.idea
+*.vscode
+*.pyc
+__pycache__
+
+.env
+!/var
+/var/*
+!var/.gitkeep
+.data
+venv
