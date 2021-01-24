@@ -10,7 +10,19 @@ class RPCErrorResponseException(Exception):
     pass
 
 
-def call(url, body, callback=None):
+def call(url, body):
+    try:
+        response = requests.post(url, body)
+    except requests.ConnectionError:
+        raise RPCDownException()
+
+    if response.status_code == 200:
+        return json.loads(response.content)
+    else:
+        raise RPCErrorResponseException(response.content.decode())
+
+
+def call_with_progress(url, body, callback=None):
     try:
         with requests.post(url, body, stream=True) as response_stream:
             if response_stream.status_code != 200:

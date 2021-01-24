@@ -1,6 +1,15 @@
 import time
 
 
+def rpc_task(data):
+    time.sleep(3)
+
+    if data['success']:
+        return data
+    else:
+        raise Exception(data)
+
+
 def rpc_task_with_progress(data, progress):
     for i in range(5):
         time.sleep(1)

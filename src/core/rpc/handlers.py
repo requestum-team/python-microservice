@@ -12,6 +12,27 @@ class RPCHandler():
     name = 'Missed name'
     data_parser = JsonParser()
 
+    async def handle(self, request):
+        data = await self.data_parser.parse(request)
+        logger.info("%s %s started" % (self.name, await self.data_parser.describe(data)))
+
+        try:
+            result = await self.create_coroutine(data)
+        except Exception as e:
+            traceback.print_exception(*(sys.exc_info()))
+            return web.Response(body='Task "%s" failed.\n %s' % (self.name, e), status=500)
+        logger.info("%s %s finished" % (self.name, await self.data_parser.describe(data)))
+
+        return web.json_response(result)
+
+    def create_coroutine(self, data):
+        raise NotImplemented()
+
+
+class RPCProgressHandler():
+    name = 'Missed name'
+    data_parser = JsonParser()
+
     def create_progress_cb(self, data, response):
         async def wrapper(progress):
             logger.info("%s: %s progress: %i" % (self.name, await self.data_parser.describe(data), progress * 100))

@@ -2,7 +2,7 @@ import bootstrap as bs
 import logging
 import aiohttp_cors
 from aiohttp import web
-from src.app.server.handlers import RPCExample
+from src.app.server.handlers import RPCExample, RPCProgressExample
 
 
 # CONFIGURE APPLICATION
@@ -24,6 +24,7 @@ application_log.handlers = [logging.StreamHandler()]
 app.add_routes([
     web.get('/health-check', lambda r: web.Response(body='ok')),
     web.post('/examples-rpc', RPCExample().handle),
+    web.post('/examples-rpc-progress', RPCProgressExample().handle),
 ])
 
 # static

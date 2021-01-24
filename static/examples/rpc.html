@@ -7,15 +7,28 @@
   <script src="/examples/rpc.js"></script>
   <script>
       document.addEventListener('DOMContentLoaded', async () => {
-          let btn = document.getElementById('run');
+          let rpc = document.getElementById('rpc');
+          let rpc2 = document.getElementById('rpc2');
           let chk = document.getElementById('success');
           let prg = document.getElementById('progress-bar');
           let out = document.getElementById('out');
-          btn.addEventListener('click', async (e) => {
+          rpc.addEventListener('click', async (e) => {
               try {
                   out.innerText = '';
                   prg.style.width = "0";
-                  let result = await call('/examples-rpc', JSON.stringify({'success': chk.checked}), (p) => {
+                  let result = await call('/examples-rpc', JSON.stringify({'success': chk.checked}));
+                  out.innerText = 'Success!<br />';
+                  out.innerText = JSON.stringify(result);
+              } catch (e) {
+                  out.innerText = 'Success!<br />';
+                  out.innerText = e.toString();
+              }
+          });
+          rpc2.addEventListener('click', async (e) => {
+              try {
+                  out.innerText = '';
+                  prg.style.width = "0";
+                  let result = await callWithProgress('/examples-rpc-progress', JSON.stringify({'success': chk.checked}), (p) => {
                       prg.style.width = Math.round(p*100) + '%';
                   });
                   out.innerText = 'Success!<br />';
@@ -30,8 +43,10 @@
 </head>
 <body>
 <div>
+    <h1>RPC calls demo</h1>
     success <input type="checkbox" checked id="success">
-    <button id="run">Call</button>
+    <button id="rpc">RPC call</button>
+    <button id="rpc2">RPC call with progress</button>
     <div class="d-inline-block" style="width: 100%">
         <div class="progress">
             <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
