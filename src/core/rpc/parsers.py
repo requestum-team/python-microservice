@@ -18,8 +18,9 @@ class TextParser():
 
 
 class JsonParser(DataParser):
-    def __init__(self, key_describers={}):
+    def __init__(self, key_describers={}, expose_data=True):
         self.key_describers = key_describers
+        self.expose_data = expose_data
 
     async def parse(self, request):
         data = await request.json()
@@ -27,6 +28,9 @@ class JsonParser(DataParser):
         return data
 
     async def describe(self, data):
+        if not self.expose_data:
+            return '[json]'
+
         pairs = []
         for key in data:
             value = data[key]
