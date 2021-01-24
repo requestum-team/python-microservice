@@ -1,7 +1,7 @@
 import time
 
 
-def computation_task_with_progress(data, progress):
+def rpc_task_with_progress(data, progress):
     for i in range(5):
         time.sleep(1)
         progress(i/4)

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Title</title>
+  <script src="/examples/rpc.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+          let btn = document.getElementById('run');
+          let chk = document.getElementById('success');
+          let prg = document.getElementById('progress-bar');
+          let out = document.getElementById('out');
+          btn.addEventListener('click', async (e) => {
+              try {
+                  out.innerText = '';
+                  prg.style.width = "0";
+                  let result = await call('/examples-rpc', JSON.stringify({'success': chk.checked}), (p) => {
+                      prg.style.width = Math.round(p*100) + '%';
+                  });
+                  out.innerText = 'Success!<br />';
+                  out.innerText = JSON.stringify(result);
+              } catch (e) {
+                  out.innerText = 'Success!<br />';
+                  out.innerText = e.toString();
+              }
+          });
+      });
+  </script>
+</head>
+<body>
+<div>
+    success <input type="checkbox" checked id="success">
+    <button id="run">Call</button>
+    <div class="d-inline-block" style="width: 100%">
+        <div class="progress">
+            <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+</div>
+<div>
+
+</div>
+<div id="out">
+</div>
+</body>
+</html>

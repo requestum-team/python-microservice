@@ -3,12 +3,12 @@ import traceback
 import sys
 import json
 from aiohttp import web
-from src.core.server.computation.parsers import JsonParser
+from src.core.rpc.parsers import JsonParser
 
 logger = logging.getLogger('application')
 
 
-class ComputationTaskHandler():
+class RPCHandler():
     name = 'Missed name'
     data_parser = JsonParser()
 

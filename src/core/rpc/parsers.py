@@ -1,4 +1,4 @@
-from src.core.server.utils.data import img_from_bytes
+from src.core.utils.data import img_from_bytes
 
 
 class DataParser:

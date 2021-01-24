@@ -40,3 +40,10 @@ async function readWithProgress(response, progressCallback) {
         throw new Error(result);
     }
 }
+
+async function call(url, data, progressCallback) {
+    let response = await fetch(url, { method: 'POST', body: data });
+    return  await readWithProgress(response, (p) => {
+        progressCallback(p)
+    });
+}

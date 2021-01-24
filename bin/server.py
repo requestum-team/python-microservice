@@ -2,7 +2,7 @@ import bootstrap as bs
 import logging
 import aiohttp_cors
 from aiohttp import web
-from src.app.server.handlers import ComputationExampleTask
+from src.app.server.handlers import RPCExample
 
 
 # CONFIGURE APPLICATION
@@ -23,7 +23,7 @@ application_log.handlers = [logging.StreamHandler()]
 # endpoints go here
 app.add_routes([
     web.get('/health-check', lambda r: web.Response(body='ok')),
-    web.post('/example', ComputationExampleTask().handle),
+    web.post('/examples-rpc', RPCExample().handle),
 ])
 
 # static
