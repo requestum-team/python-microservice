@@ -2,25 +2,12 @@ import bootstrap as bs
 import logging
 import aiohttp_cors
 from aiohttp import web
-from src.app.server.handlers import ExampleTask
+from src.app.server.handlers import ComputationExampleTask
 
 
 # CONFIGURE APPLICATION
 # init app and middlewares
 app = web.Application()
-
-# configure CORS
-cors = aiohttp_cors.setup(app, defaults={
-    "*": aiohttp_cors.ResourceOptions(
-        allow_credentials=True,
-        expose_headers="*",
-        allow_headers="*",
-        allow_methods="*"
-    )
-})
-
-for resource in app.router.resources():
-    cors.add(resource)
 
 # access log
 # access_log = logging.getLogger('aiohttp.access')
@@ -36,9 +23,26 @@ application_log.handlers = [logging.StreamHandler()]
 # endpoints go here
 app.add_routes([
     web.get('/health-check', lambda r: web.Response(body='ok')),
-    web.get('/example', ExampleTask().handle),
+    web.post('/example', ComputationExampleTask().handle),
 ])
 
+# static
+app.add_routes([
+    web.static('/', bs.path('static'))
+])
+
+# configure CORS
+cors = aiohttp_cors.setup(app, defaults={
+    "*": aiohttp_cors.ResourceOptions(
+        allow_credentials=True,
+        expose_headers="*",
+        allow_headers="*",
+        allow_methods="*"
+    )
+})
+
+for resource in app.router.resources():
+    cors.add(resource)
 
 # start web server
 async def on_startup(loop):
